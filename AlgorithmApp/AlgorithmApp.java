@@ -58,6 +58,41 @@ public class AlgorithmApp {
             }
         }
 
+        public static void selectionSort(int[] arr) {
+            int n = arr.length;
+            for (int i = 0; i < n - 1; i++) {
+              int minIndex = i;
+              for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIndex]) {
+                  minIndex = j;
+                }
+              }
+              int temp = arr[minIndex];
+              arr[minIndex] = arr[i];
+              arr[i] = temp;
+            }
+            // Selection sort has a time complexity of O(n^2)
+            //Selection sort has a space complexity of O(1)
+          }
+        
+          public static void shellSort(int[] arr) {
+            int n = arr.length;
+            for (int gap = n / 2; gap > 0; gap /= 2) {
+              for (int i = gap; i < n; i++) {
+                int temp = arr[i];
+                int j;
+                for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                  arr[j] = arr[j - gap];
+                }
+                arr[j] = temp;
+              }
+            }
+            // Shell sort has a time complexity of O(n^(3/2)) ie O(n^2)
+            //Shell sort has a space complexity of O(1)
+
+          }
+        
+
         private static int partition(int[] arr, int low, int high) {
             int pivot = arr[high];
             int i = (low - 1);
@@ -87,6 +122,30 @@ public class AlgorithmApp {
                 while(choice != 1 && choice != 2){
                     System.out.println("Enter a number within the specified range");
                     choice = getChoice(question, choiceOne, choiceTwo);
+                }
+                return choice;
+            }
+            catch (Exception e){
+                System.out.println("Enter a valid number!");
+                choice = getChoice(question, choiceOne, choiceTwo);
+            }
+            return choice;
+        }
+
+        public static int getSortingChoice(String question, String choiceOne, String choiceTwo, String choiceThree, String choiceFour){
+            int choice = 0;
+            Scanner scanner = new Scanner(System.in);
+            try{
+                System.out.println(question);
+                System.out.println(choiceOne);
+                System.out.println(choiceTwo);
+                System.out.println(choiceThree);
+                System.out.println(choiceFour);
+                System.out.println();
+                choice = scanner.nextInt();
+                while(choice < 1 && choice > 4){
+                    System.out.println("Enter a number within the specified range");
+                    choice = getSortingChoice(question, choiceOne, choiceTwo, choiceThree, choiceFour);
                 }
                 return choice;
             }
@@ -171,15 +230,27 @@ public class AlgorithmApp {
                 System.out.println("Running time (nanoseconds): " + duration);
 
             } else if (algorithmType == 1) {
-                int sortAlgorithm = getChoice("Select a sorting algorithm:","1. Quick Sort", "2. Bubble Sort");
+                int sortAlgorithm = getSortingChoice("Select a sorting algorithm:","1. Quick Sort", "2. Bubble Sort", "3. Selection Sort", "4. Shell Sort");
                 long startTime = System.nanoTime();
 
-                if (sortAlgorithm == 1) {
-                    bubbleSort(arr);
-                } else if (sortAlgorithm == 2) {
-                    quickSort(arr, 0, arr.length - 1);
+                switch (sortAlgorithm) {
+                    case 1:
+                        bubbleSort(arr);
+                        break;
+                    case 2:
+                        quickSort(arr, 0, arr.length - 1);
+                        break;
+                    case 3:
+                        selectionSort(arr);
+                        break;
+                    case 4:
+                        shellSort(arr);
+                        break;
+                
+                    default:
+                        break;
                 }
-
+                
                 long endTime = System.nanoTime();
                 long duration = (endTime - startTime);
 
