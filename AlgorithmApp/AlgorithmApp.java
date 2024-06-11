@@ -132,6 +132,30 @@ public class AlgorithmApp {
             return choice;
         }
 
+        public static int getSortingChoice(String question, String choiceOne, String choiceTwo, String choiceThree, String choiceFour){
+            int choice = 0;
+            Scanner scanner = new Scanner(System.in);
+            try{
+                System.out.println(question);
+                System.out.println(choiceOne);
+                System.out.println(choiceTwo);
+                System.out.println(choiceThree);
+                System.out.println(choiceFour);
+                System.out.println();
+                choice = scanner.nextInt();
+                while(choice != 1 && choice != 4){
+                    System.out.println("Enter a number within the specified range");
+                    choice = getSortingChoice(question, choiceOne, choiceTwo, choiceThree, choiceFour);
+                }
+                return choice;
+            }
+            catch (Exception e){
+                System.out.println("Enter a valid number!");
+                choice = getChoice(question, choiceOne, choiceTwo);
+            }
+            return choice;
+        }
+
         public static int getKey(String query){
             int key = 0;
             System.out.println(query);
@@ -206,13 +230,17 @@ public class AlgorithmApp {
                 System.out.println("Running time (nanoseconds): " + duration);
 
             } else if (algorithmType == 1) {
-                int sortAlgorithm = getChoice("Select a sorting algorithm:","1. Quick Sort", "2. Bubble Sort");
+                int sortAlgorithm = getSortingChoice("Select a sorting algorithm:","1. Quick Sort", "2. Bubble Sort", "3. Selection Sort", "4. Shell Sort");
                 long startTime = System.nanoTime();
 
                 if (sortAlgorithm == 1) {
                     bubbleSort(arr);
                 } else if (sortAlgorithm == 2) {
                     quickSort(arr, 0, arr.length - 1);
+                } else if (sortAlgorithm == 3) {
+                    selectionSort(arr);
+                } else if (sortAlgorithm == 4) {
+                    shellSort(arr);
                 }
 
                 long endTime = System.nanoTime();
