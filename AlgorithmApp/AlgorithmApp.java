@@ -143,7 +143,7 @@ public class AlgorithmApp {
                 System.out.println(choiceFour);
                 System.out.println();
                 choice = scanner.nextInt();
-                while(choice != 1 && choice != 4){
+                while(choice < 1 && choice > 4){
                     System.out.println("Enter a number within the specified range");
                     choice = getSortingChoice(question, choiceOne, choiceTwo, choiceThree, choiceFour);
                 }
