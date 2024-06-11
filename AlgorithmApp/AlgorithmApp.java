@@ -233,16 +233,24 @@ public class AlgorithmApp {
                 int sortAlgorithm = getSortingChoice("Select a sorting algorithm:","1. Quick Sort", "2. Bubble Sort", "3. Selection Sort", "4. Shell Sort");
                 long startTime = System.nanoTime();
 
-                if (sortAlgorithm == 1) {
-                    bubbleSort(arr);
-                } else if (sortAlgorithm == 2) {
-                    quickSort(arr, 0, arr.length - 1);
-                } else if (sortAlgorithm == 3) {
-                    selectionSort(arr);
-                } else if (sortAlgorithm == 4) {
-                    shellSort(arr);
+                switch (sortAlgorithm) {
+                    case 1:
+                        bubbleSort(arr);
+                        break;
+                    case 2:
+                        quickSort(arr, 0, arr.length - 1);
+                        break;
+                    case 3:
+                        selectionSort(arr);
+                        break;
+                    case 4:
+                        shellSort(arr);
+                        break;
+                
+                    default:
+                        break;
                 }
-
+                
                 long endTime = System.nanoTime();
                 long duration = (endTime - startTime);
 
