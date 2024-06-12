@@ -1,4 +1,6 @@
 package AlgorithmApp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Arrays;
 
@@ -58,6 +60,23 @@ public class AlgorithmApp {
             }
         }
 
+    private static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = (low - 1);
+        for (int j = low; j < high; j++) {
+            if (arr[j] < pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        return i + 1;
+    }
+
         public static void selectionSort(int[] arr) {
             int n = arr.length;
             for (int i = 0; i < n - 1; i++) {
@@ -89,69 +108,85 @@ public class AlgorithmApp {
             }
             // Shell sort has a time complexity of O(n^(3/2)) ie O(n^2)
             //Shell sort has a space complexity of O(1)
-
           }
-        
 
-        private static int partition(int[] arr, int low, int high) {
-            int pivot = arr[high];
-            int i = (low - 1);
-            for (int j = low; j < high; j++) {
-                if (arr[j] < pivot) {
-                    i++;
-                    int temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
+        public static void insertionSort(int[] array) {
+            for (int i = 1; i < array.length; i++) {
+                // currentElement stores the current element in the array to be sorted
+                int currentElement = array[i];
+                int j = i - 1;
+
+                while (j >= 0 && array[j] > currentElement) {
+                    array[j + 1] = array[j];
+                    j = j - 1;
                 }
+                array[j + 1] = currentElement;
             }
-            int temp = arr[i + 1];
-            arr[i + 1] = arr[high];
-            arr[high] = temp;
-            return i + 1;
         }
 
-        public static int getChoice(String question, String choiceOne, String choiceTwo){
+    public static int[] mergeSort(int[] array) {
+        if (array.length < 2) {
+            return array;
+        }
+        int middleIndex = array.length / 2;
+        int[] leftArray = Arrays.copyOfRange(array, 0, middleIndex); // works like the splice method in javaScript
+        int[] rightArray = Arrays.copyOfRange(array, middleIndex, array.length);
+        array = merge(mergeSort(leftArray), mergeSort(rightArray));
+        return array;
+    }
+
+    private static int[] merge(int[] leftArray, int[] rightArray) {
+        int[] resultArray = new int[leftArray.length + rightArray.length];
+        int leftIndex = 0;
+        int rightIndex = 0;
+        int resultIndex = 0;
+
+        while (leftIndex < leftArray.length && rightIndex < rightArray.length) {
+            if (leftArray[leftIndex] < rightArray[rightIndex]) {
+                resultArray[resultIndex] = leftArray[leftIndex];
+                leftIndex++;
+
+            } else {
+                resultArray[resultIndex] = rightArray[rightIndex];
+                rightIndex++;
+
+            }
+            resultIndex++;
+        }
+        while (leftIndex < leftArray.length) {
+            resultArray[resultIndex] = leftArray[leftIndex];
+            leftIndex++;
+            resultIndex++;
+        }
+
+        while (rightIndex < rightArray.length) {
+            resultArray[resultIndex] = rightArray[rightIndex];
+            rightIndex++;
+            resultIndex++;
+        }
+
+        return resultArray;
+    }
+
+
+        public static int getChoice(String question, ArrayList<String> choices){
             int choice = 0;
             Scanner scanner = new Scanner(System.in);
             try{
                 System.out.println(question);
-                System.out.println(choiceOne);
-                System.out.println(choiceTwo);
-                System.out.println();
+                for (String opt: choices ) {
+                    System.out.println(opt);
+                }
                 choice = scanner.nextInt();
-                while(choice != 1 && choice != 2){
+                while(choice < 1 || choice > choices.size()){
                     System.out.println("Enter a number within the specified range");
-                    choice = getChoice(question, choiceOne, choiceTwo);
+                    choice = getChoice(question,choices);
                 }
                 return choice;
             }
             catch (Exception e){
                 System.out.println("Enter a valid number!");
-                choice = getChoice(question, choiceOne, choiceTwo);
-            }
-            return choice;
-        }
-
-        public static int getSortingChoice(String question, String choiceOne, String choiceTwo, String choiceThree, String choiceFour){
-            int choice = 0;
-            Scanner scanner = new Scanner(System.in);
-            try{
-                System.out.println(question);
-                System.out.println(choiceOne);
-                System.out.println(choiceTwo);
-                System.out.println(choiceThree);
-                System.out.println(choiceFour);
-                System.out.println();
-                choice = scanner.nextInt();
-                while(choice < 1 && choice > 4){
-                    System.out.println("Enter a number within the specified range");
-                    choice = getSortingChoice(question, choiceOne, choiceTwo, choiceThree, choiceFour);
-                }
-                return choice;
-            }
-            catch (Exception e){
-                System.out.println("Enter a valid number!");
-                choice = getChoice(question, choiceOne, choiceTwo);
+                choice = getChoice(question, choices);
             }
             return choice;
         }
@@ -180,36 +215,44 @@ public class AlgorithmApp {
         Scanner scanner = new Scanner(System.in);
         int n = getKey("Enter an array size ");
         int[] arr = new int[n];
-        try
-        {
+        try {
             System.out.println("Enter the elements of the array: ");
             for (int i = 0; i < n; i++) {
                 System.out.print("Element " + (i + 1) + ": ");
                 arr[i] = scanner.nextInt();
             }
             return arr;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Please enter a valid number!");
             arr = getArray();
         }
         return arr;
     }
-        public static void main(String[] args) {
-            Scanner scanner = new Scanner(System.in);
 
-
-            int algorithmType = getChoice("Select  an algorithm type: ", "1.Sorting", "2.Searching " );
+        public static void runAlgorithms(){
+            ArrayList<String> choiceOfAlgo = new ArrayList<>(
+                    List.of(
+                            "1.Sorting",
+                            "2.Searching "
+                    )
+            );
+            int algorithmType = getChoice("Select an algorithm type: ", choiceOfAlgo);
 
             int[] arr = getArray();
 
             if (algorithmType == 2) {
-                int searchAlgorithm = getChoice("Select  a searching algorithm: ", "1. Linear Search","2. Binary Search" );
+                ArrayList<String> choiceOfSearchAlgo = new ArrayList<>(
+                        List.of(
+                                "1. Linear Search",
+                                "2. Binary Search"
+                        )
+                );
+                int searchAlgorithm = getChoice("Select  a searching algorithm: ",choiceOfSearchAlgo );
 
                 int key = getKey("Enter the value you want to search for");
 
                 long startTime = System.nanoTime();
-                int result = Integer.MIN_VALUE;
+                int result = -1;
 
                 if (searchAlgorithm == 1) {
                     result = linearSearch(arr, key);
@@ -221,7 +264,7 @@ public class AlgorithmApp {
                 long endTime = System.nanoTime();
                 long duration = (endTime - startTime);
 
-                if (result != Integer.MIN_VALUE) {
+                if (result != -1) {
                     System.out.println("Value found at index: " + result);
                 } else {
                     System.out.println("Value not found.");
@@ -230,7 +273,10 @@ public class AlgorithmApp {
                 System.out.println("Running time (nanoseconds): " + duration);
 
             } else if (algorithmType == 1) {
-                int sortAlgorithm = getSortingChoice("Select a sorting algorithm:","1. Quick Sort", "2. Bubble Sort", "3. Selection Sort", "4. Shell Sort");
+                ArrayList<String> choiceOfSortingALgo = new ArrayList<>(
+                        List.of("1. Quick Sort", "2. Bubble Sort", "3. Selection Sort", "4. Shell Sort", "5. Insertion Sort", "6. Merge Sort")
+                );
+                int sortAlgorithm = getChoice("Select a sorting algorithm:", choiceOfSortingALgo);
                 long startTime = System.nanoTime();
 
                 switch (sortAlgorithm) {
@@ -246,11 +292,16 @@ public class AlgorithmApp {
                     case 4:
                         shellSort(arr);
                         break;
-                
+                    case 5:
+                        insertionSort(arr);
+                        break;
+                    case 6:
+                        mergeSort(arr);
+                        break;
                     default:
                         break;
                 }
-                
+
                 long endTime = System.nanoTime();
                 long duration = (endTime - startTime);
 
@@ -258,7 +309,28 @@ public class AlgorithmApp {
                 System.out.println("Running time (nanoseconds): " + duration);
             }
 
-            scanner.close();
         }
 
+        public static void runProgram(){
+            System.out.println();
+            System.out.println("Welcome Algorithm masters");
+            ArrayList<String> programChoice = new ArrayList<>(
+                    List.of("1. Run the program", "2. Quit")
+            );
+            int choice = getChoice("What would you like to do? ", programChoice);
+            switch (choice){
+                case 1:
+                    runAlgorithms();
+                    runProgram();
+                    break;
+                case 2:
+                    System.out.println("Bye \uD83D\uDC4B ");
+                    System.exit(1);
+                    break;
+            }
+        }
+
+    public static void main(String[] args) {
+        runProgram();
+    }
     }
