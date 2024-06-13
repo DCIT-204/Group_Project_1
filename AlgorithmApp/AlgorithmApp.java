@@ -170,7 +170,7 @@ public class AlgorithmApp {
         return resultArray;
     }
 
-    private static ArrayList<Integer> radixSort(int[] array) {
+    private static void radixSort(int[] array) {
         // convert to arraylist
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
         for (int i : array) {
@@ -187,14 +187,14 @@ public class AlgorithmApp {
         int digitRep = 1; // Position in focus (1, 10, 100, 1000, ...)
 
         while (Math.floorDiv(max, digitRep) > 0) {
-            while (arrayList.size() > 0) {
+            while (!arrayList.isEmpty()) {
                 int value = arrayList.removeLast();
                 int radixIdx = (Math.floorDiv(value, digitRep)) % 10;
 
                 radixArr.get(radixIdx).add(value);
             }
             for (ArrayList<Integer> bucket : radixArr) {
-                while (bucket.size() > 0) {
+                while (!bucket.isEmpty()) {
                     int value = bucket.removeLast();
                     arrayList.add(value);
                 }
@@ -208,8 +208,41 @@ public class AlgorithmApp {
             array[i] = arrayList.get(i);
         }
 
-        return arrayList;
+    }
 
+    public static void heapSort(int[] arr) {
+        int n = arr.length;
+
+        for (int i = n / 2 - 1; i >= 0; i--)
+            heapify(arr, n, i);
+
+        for (int i = n - 1; i >= 0; i--) {
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+
+            heapify(arr, i, 0);
+        }
+    }
+
+    static void heapify(int[] arr, int n, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest])
+            largest = left;
+
+        if (right < n && arr[right] > arr[largest])
+            largest = right;
+
+        if (largest != i) {
+            int swap = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = swap;
+
+            heapify(arr, n, largest);
+        }
     }
 
     public static int getChoice(String question, ArrayList<String> choices) {
@@ -313,7 +346,7 @@ public class AlgorithmApp {
         } else if (algorithmType == 1) {
             ArrayList<String> choiceOfSortingALgo = new ArrayList<>(
                     List.of("1. Quick Sort", "2. Bubble Sort", "3. Selection Sort", "4. Shell Sort",
-                            "5. Insertion Sort", "6. Merge Sort", "7. Radix Sort"));
+                            "5. Insertion Sort", "6. Merge Sort", "7. Radix Sort", "8. Heap Sort"));
             int sortAlgorithm = getChoice("Select a sorting algorithm:", choiceOfSortingALgo);
             long startTime = System.nanoTime();
 
@@ -338,6 +371,10 @@ public class AlgorithmApp {
                     break;
                 case 7:
                     radixSort(arr);
+                    break;
+                case 8:
+                    heapSort(arr);
+                    break;
                 default:
                     break;
             }
