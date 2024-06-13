@@ -311,24 +311,19 @@ public class AlgorithmApp {
 
         }
 
-        public static void runProgram(){
-            System.out.println();
-            System.out.println("Welcome Algorithm masters");
+    public static void runProgram(){
+        System.out.println("Welcome Algorithm masters");
+        int choice;
+        do {
+            runAlgorithms();
             ArrayList<String> programChoice = new ArrayList<>(
-                    List.of("1. Run the program", "2. Quit")
-            );
-            int choice = getChoice("What would you like to do? ", programChoice);
-            switch (choice){
-                case 1:
-                    runAlgorithms();
-                    runProgram();
-                    break;
-                case 2:
-                    System.out.println("Bye \uD83D\uDC4B ");
-                    System.exit(1);
-                    break;
-            }
-        }
+                    List.of("1. Run the program again", "2. Quit"));
+            choice = getChoice("What would you like to do next? ", programChoice);
+        } while (choice == 1);
+
+        System.out.println("Bye 👋");
+
+    }
 
     public static void main(String[] args) {
         runProgram();
