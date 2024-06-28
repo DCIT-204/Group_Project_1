@@ -206,7 +206,6 @@ public class AlgorithmApp {
                         "2.Searching "));
         int algorithmType = getChoice("Select an algorithm type: ", choiceOfAlgo);
 
-        int[] arr = getArray();
 
         if (algorithmType == 2) {
             ArrayList<String> choiceOfSearchAlgo = new ArrayList<>(
@@ -214,6 +213,7 @@ public class AlgorithmApp {
                             "1. Linear Search",
                             "2. Binary Search"));
             int searchAlgorithm = getChoice("Select  a searching algorithm: ", choiceOfSearchAlgo);
+            int[] arr = getArray();
 
             int key = getKey("Enter the value you want to search for");
 
@@ -243,6 +243,8 @@ public class AlgorithmApp {
                     List.of("1. Quick Sort", "2. Bubble Sort", "3. Selection Sort", "4. Shell Sort",
                             "5. Insertion Sort", "6. Merge Sort", "7. Radix Sort", "8. Heap Sort"));
             int sortAlgorithm = getChoice("Select a sorting algorithm:", choiceOfSortingALgo);
+            int[] arr = getArray();
+
             long startTime = System.nanoTime();
 
             switch (sortAlgorithm) {
