@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 
 public class RadixSort {
-    private static ArrayList<Integer> radixSort(int[] array) {
+    public static ArrayList<Integer> radixSort(int[] array) {
     // convert to arraylist
             ArrayList<Integer> arrayList = new ArrayList<Integer>();
             for (int i : array) {

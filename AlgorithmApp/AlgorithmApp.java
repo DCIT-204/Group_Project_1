@@ -7,139 +7,6 @@ import java.util.Arrays;
 
 public class AlgorithmApp {
 
-    public static void insertionSort(int[] array) {
-        for (int i = 1; i < array.length; i++) {
-            // currentElement stores the current element in the array to be sorted
-            int currentElement = array[i];
-            int j = i - 1;
-
-            while (j >= 0 && array[j] > currentElement) {
-                array[j + 1] = array[j];
-                j = j - 1;
-            }
-            array[j + 1] = currentElement;
-        }
-    }
-
-    public static int[] mergeSort(int[] array) {
-        if (array.length < 2) {
-            return array;
-        }
-        int middleIndex = array.length / 2;
-        int[] leftArray = Arrays.copyOfRange(array, 0, middleIndex); // works like the splice method in javaScript
-        int[] rightArray = Arrays.copyOfRange(array, middleIndex, array.length);
-        array = merge(mergeSort(leftArray), mergeSort(rightArray));
-        return array;
-    }
-
-    private static int[] merge(int[] leftArray, int[] rightArray) {
-        int[] resultArray = new int[leftArray.length + rightArray.length];
-        int leftIndex = 0;
-        int rightIndex = 0;
-        int resultIndex = 0;
-
-        while (leftIndex < leftArray.length && rightIndex < rightArray.length) {
-            if (leftArray[leftIndex] < rightArray[rightIndex]) {
-                resultArray[resultIndex] = leftArray[leftIndex];
-                leftIndex++;
-
-            } else {
-                resultArray[resultIndex] = rightArray[rightIndex];
-                rightIndex++;
-
-            }
-            resultIndex++;
-        }
-        while (leftIndex < leftArray.length) {
-            resultArray[resultIndex] = leftArray[leftIndex];
-            leftIndex++;
-            resultIndex++;
-        }
-
-        while (rightIndex < rightArray.length) {
-            resultArray[resultIndex] = rightArray[rightIndex];
-            rightIndex++;
-            resultIndex++;
-        }
-
-        return resultArray;
-    }
-
-    private static void radixSort(int[] array) {
-        // convert to arraylist
-        ArrayList<Integer> arrayList = new ArrayList<Integer>();
-        for (int i : array) {
-            arrayList.add(i);
-        }
-
-        ArrayList<ArrayList<Integer>> radixArr = new ArrayList<ArrayList<Integer>>();
-        for (int i = 0; i < 10; i++) {
-            radixArr.add(new ArrayList<Integer>());
-        }
-
-        int max = Arrays.stream(array).max().getAsInt();
-
-        int digitRep = 1; // Position in focus (1, 10, 100, 1000, ...)
-
-        while (Math.floorDiv(max, digitRep) > 0) {
-            while (!arrayList.isEmpty()) {
-                int value = arrayList.removeLast();
-                int radixIdx = (Math.floorDiv(value, digitRep)) % 10;
-
-                radixArr.get(radixIdx).add(value);
-            }
-            for (ArrayList<Integer> bucket : radixArr) {
-                while (!bucket.isEmpty()) {
-                    int value = bucket.removeLast();
-                    arrayList.add(value);
-                }
-            }
-
-            digitRep *= 10;
-        }
-
-        // Passing by reference lol. This is gonna mess with the running time.
-        for (int i = 0; i < array.length; i++) {
-            array[i] = arrayList.get(i);
-        }
-
-    }
-
-    public static void heapSort(int[] arr) {
-        int n = arr.length;
-
-        for (int i = n / 2 - 1; i >= 0; i--)
-            heapify(arr, n, i);
-
-        for (int i = n - 1; i >= 0; i--) {
-            int temp = arr[0];
-            arr[0] = arr[i];
-            arr[i] = temp;
-
-            heapify(arr, i, 0);
-        }
-    }
-
-    static void heapify(int[] arr, int n, int i) {
-        int largest = i;
-        int left = 2 * i + 1;
-        int right = 2 * i + 2;
-
-        if (left < n && arr[left] > arr[largest])
-            largest = left;
-
-        if (right < n && arr[right] > arr[largest])
-            largest = right;
-
-        if (largest != i) {
-            int swap = arr[i];
-            arr[i] = arr[largest];
-            arr[largest] = swap;
-
-            heapify(arr, n, largest);
-        }
-    }
-
     public static int getChoice(String question, ArrayList<String> choices) {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
@@ -261,16 +128,16 @@ public class AlgorithmApp {
                     ShellSort.shellSort(arr);
                     break;
                 case 5:
-                    insertionSort(arr);
+                    InsertionSort.insertionSort(arr);
                     break;
                 case 6:
-                    mergeSort(arr);
+                    MergeSort.mergeSort(arr);
                     break;
                 case 7:
-                    radixSort(arr);
+                    RadixSort.radixSort(arr);
                     break;
                 case 8:
-                    heapSort(arr);
+                    HeapSort.heapSort(arr);
                     break;
                 default:
                     break;
